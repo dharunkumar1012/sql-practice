@@ -1,0 +1,48 @@
+-- [ BASICS OF SQL ] 
+
+CREATE DATABASE Dk; 
+
+USE Dk;
+
+DROP DATABASE Dk;
+
+
+CREATE TABLE Employees (
+	emp_id INT,
+    emp_name VARCHAR(50),
+    emp_salary DECIMAL(7,2),
+    join_date DATE
+);
+
+SELECT * FROM employees;
+
+RENAME TABLE workers To employees;
+
+ALTER TABLE employees 
+ADD phone_no VARCHAR(10);
+
+ALTER TABLE employees
+ADD email VARCHAR(50);
+
+ALTER TABLE employees
+RENAME COLUMN phone_no TO ph_no;
+
+ALTER TABLE employees
+RENAME COLUMN email TO email_id;
+
+ALTER TABLE employees
+Add address VARCHAR (100);
+
+ALTER TABLE employees
+MODIFY COLUMN address VARCHAR(80)
+AFTER emp_name;
+
+ALTER TABLE employees
+DROP COLUMN email_id;
+
+ALTER TABLE employees
+ADD dob VARCHAR(10);
+
+ALTER TABLE employees
+MODIFY COLUMN dob DATE
+AFTER emp_name;
