@@ -1,0 +1,46 @@
+-- [ TEST ]
+
+create database test;
+use test;
+
+create table weather(
+	Report_id INT,
+    City VARCHAR(15),
+    Temperature DECIMAL(4,1),
+    Humidity INT,
+    Weather_Condition VARCHAR(15)
+);
+
+
+
+INSERT INTO weather 
+VALUES 
+		( 1, 'Chennai', 34.5, 65, 'Sunny' ),
+		( 2, 'Bangalore', 28.2, 70, 'Rainy' ),
+        ( 3, 'Mumbai', 31.0, 75, 'Sunny' ),
+        ( 4, 'Delhi', 29.8, 60, 'Rainy' ),
+        ( 5, 'Hyderabad', 32.4, 68, 'Partly Cloudly' ),
+        ( 6, 'Kolkata', 30.5, 72, 'Humid' ),
+        ( 7, 'Pune', 27.9, 66, 'Rainy' );
+
+SELECT * FROM weather;
+
+select city from weather;
+
+select * from weather
+where weather_condition = 'Rainy';
+
+ALTER TABLE weather
+ADD COLUMN Todays_date DATE;
+
+UPDATE weather
+set Todays_date = '2026-03-14';
+
+set autocommit = 0;
+
+set sql_safe_updates = 0;
+
+delete from weather;
+
+rollback;
+
