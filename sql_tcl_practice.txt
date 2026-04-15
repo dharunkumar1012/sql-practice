@@ -1,0 +1,73 @@
+-- [ EXAMPLE OF TCL - TRANSACTION CONTROL LANGUAGE ]
+-- [EXAMPLE OF COMMIT AND ROLLBACK]
+use Dk;
+select * from employees;
+
+INSERT INTO employees
+VALUES 
+		( 3, 'Luffy', '1600-02-10', 'Blue Gate', 80000.00, '1620-01-01', '7894561230', 'monkeydluffy@gmail.com' ),
+        ( 4, 'Zoro', '1600-03-02', 'Blue Gate', 70000.00, '1620-02-21', '7894561230', 'zoro@gmail.com' );
+        
+INSERT INTO employees ( emp_id, emp_name, email )
+VALUES ( 5, 'Nami', 'nami@gmail.com' );
+
+SELECT emp_name, join_date, email FROM employees;
+
+SELECT emp_name AS PIRATES, emp_salary AS BOUNTY FROM employees;
+
+SELECT * FROM employees WHERE emp_id = 3;
+
+SELECT emp_id, emp_salary FROM employees WHERE emp_name = 'zoro';
+
+
+SELECT * FROM employees WHERE emp_id != 3; 
+
+SELECT * FROM employees WHERE emp_salary > 70000;
+SELECT * FROM employees WHERE join_date IS NOT NULL;
+
+SELECT * FROM employees WHERE join_date > '1620-02-21';
+
+update employees
+set 
+	dob = '1600-01-02', 
+    address = 'Nothing', 
+    emp_salary = 1000, 
+    join_date = '1620-10-20', 
+    ph_no = '6497856130'
+where emp_id = 5;
+
+
+select * from employees 
+where emp_id = 5;
+
+desc employees;
+show tables;
+
+
+set autocommit = 0;
+
+set sql_safe_updates = 0;
+
+create table lite ( doj date, date_time datetime, neram time ); 
+
+create table nike (id int, cus_name varchar(20), location varchar(20) );
+
+insert into lite values( current_date(), now(), current_time() );
+
+update nike
+set cus_name = 'kumar';
+
+insert into nike values ( 1, 'Dharun', 'Chennai' );
+
+commit;
+
+delete from lite
+where doj = current_date();
+
+select	* from lite;
+select * from nike;	
+delete  from nike where id=1;
+drop table nike;
+rollback;
+
+
