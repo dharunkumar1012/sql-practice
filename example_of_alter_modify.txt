@@ -1,0 +1,27 @@
+-- [ EXAMPLE OF ALTER AND MODIFY ]
+
+create database tata;
+use tata;
+
+create table tata_emp (
+	emp_id int, emp_name varchar(10), dept varchar(10), dob date, address varchar(10)
+);
+
+select * from tata_employee;
+
+alter table tata_emp
+add column join_date date;
+
+alter table tata_emp
+modify column address int;
+
+alter table tata_emp
+rename to tata_employee;
+
+desc tata_employee;
+
+alter table tata_emp
+rename column emp_id to id;
+
+alter table tata_emp
+drop column address;
