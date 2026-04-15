@@ -1,0 +1,94 @@
+-- [ EXAMPLE OF CONSTRAINTS ]
+
+use dk;
+
+create table product(
+	p_id int,
+    p_name varchar(15) ,
+    price decimal(6,2)
+
+);
+
+desc product;
+
+drop table product;
+
+-- [UNIQUE KEY]
+alter table product
+add constraint unique key (p_name);
+
+-- [NOT NULL]
+alter table product
+modify p_name varchar(15) not null; -- NOT NULL is a column property, not a table constraint. WE MUST USE MODIFY
+
+-- [CHECK]
+alter table product
+add constraint check_price check(price < 1000);  -- FOR CHECK CONSTRAINT WE MUST USE REFFERENCE NAME SO THAT WE CAN DROP THE CONSTRAINT.
+
+-- [DEFAULT]
+alter table product
+modify price decimal(6,2) default 20; -- DEFAULT is a column property, not a table constraint. WE MUST USE MODIFY
+
+insert into product
+values(1, "mocha " ,2000.30);
+
+insert into product
+values(2, 'mocha', 320.20);
+
+insert into product
+values(3, "Choco", 265.23);
+
+insert into product
+values(3, "Choco", 459.31);
+
+alter table product
+drop constraint  check_price;
+    
+select * from product;
+    
+delete from product;
+
+drop table product;
+
+desc product;
+
+
+-- [ SELF Test ]
+
+create table student(
+	roll_no int primary key,
+    std_name varchar(20) Not Null,
+    std_age int 
+    constraint check_age check(std_age >= 18),
+    std_mark decimal(5,2) default 0
+);
+
+insert into student
+values(1, "Raj", 18, 55);
+
+insert into student (roll_no, std_name, std_age)
+values(2, "Raj", 20);
+
+insert into student
+values(3, "Dharun", 22, 100.00);
+
+select * from student;
+
+drop table student;
+
+
+-- [ TEST ]
+
+create table product_1(
+	p_id int,
+    p_name varchar(15) unique key Not null,
+    price decimal(6,2)
+    constraint check_price check(price < 1000) default 20
+);
+
+insert into product_1
+values ( 1, "Dk", 100 );
+insert into product_1
+values ( 1, "lk", 100 );
+
+select * from product_1;
