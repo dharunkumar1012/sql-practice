@@ -1,0 +1,46 @@
+-- [ EXAMPLE OF OPERATORS ]
+
+create database School;
+use School;
+
+create table mark_list(
+    std_id INT,
+    std_name VARCHAR(50),
+    std_class VARCHAR(5),
+    english int,
+    tamil int,
+    maths int,
+    science int,
+    social_science int
+);
+
+insert into mark_list
+values 
+	( 1, 'Dharun Kumar', '12th', 75, 80, 60, 89, 80 ),
+	( 2, 'Kumar', '11th', 60, 55, 62, 40, 50 ),
+        ( 3, 'Ranjith', '9th', 70, 40, 49, 35, 90 ),
+        ( 4, 'Vijay', '10th', 42, 92, 59, 49, 39 ),
+        ( 5, 'Vaali', '8th', 35, 39, 48, 36, 46 );
+
+select std_id, std_name, std_class, (english + tamil + maths + science + social_science) as total from mark_list
+having total > 280; -- GREATER THAN OR LESS THAN
+
+select std_id, std_name, std_class, english, tamil from mark_list
+where english > 60 && tamil > 60;  -- AND 
+
+select std_id, std_name, std_class, maths, science from mark_list
+where maths > 50 || science > 60; -- OR
+
+select * from mark_list
+where std_class != '10th'; -- NOT
+
+select * from mark_list
+where std_class = '10th';  -- EQUAL
+
+select * from mark_list;
+
+select * from mark_list
+order by std_name asc
+limit 3;
+
+select count(*) from mark_list;
