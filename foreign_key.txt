@@ -1,0 +1,106 @@
+-- [ FOREIGN KEY ] [ THIS FOREIGN KEY IS RELATIONSHIP WITH AMOUNT_TRANSACTIONS TABLE ] [ FOREIGN KEY VALUE DON'T NEED TO BE EQUAL.. AND IT ACCEPTS NULL VALUE]
+-- [ JOINS -- INNER, LEFT, RIGHT ]
+use dk;
+
+create table customers(                      
+	c_id int primary key auto_increment,
+    c_name varchar(15) not null,
+    c_age int not null
+);
+
+show indexes from customers;
+
+insert into customers (c_name, c_age)
+values('leo', 37), ('cr7', 40), ('Neymar', 34), ('Oscar', 30);
+
+insert into customers (c_name, c_age)
+values('Dk', 22);
+
+select * from customers;
+
+create table amount_transaction(
+	t_id int primary key auto_increment,
+    amount decimal(6, 2),
+    customer_id int,
+    foreign key(customer_id) references customers(c_id)
+);
+
+insert into amount_transaction (amount, customer_id)
+values(5000.23, 4);
+
+insert into amount_transaction (amount, customer_id)
+values(6000.23, 2), (326.03, 1), (9000.00, 3);
+
+insert into amount_transaction (amount, customer_id)
+values(2000.23, 1);
+
+select * from amount_transaction;
+
+-- [ INNER JOIN ]
+select * from customers c 
+inner join amount_transaction a
+on c.c_id = a.customer_id;
+
+select a.t_id, a.amount, c.c_name from customers c
+inner join amount_transaction a
+on c.c_id = a.customer_id;
+
+-- [ LEFT JOIN ]
+select a.t_id, a.amount, c.c_name from customers c
+left join amount_transaction a
+on c.c_id = a.customer_id;
+
+-- [ RIGHT JOIN ]
+select a.t_id, a.amount, c.c_name from customers c
+right join amount_transaction a
+on c.c_id = a.customer_id;
+
+desc customers;
+
+
+-- [ SELF TEST ]
+
+create table online_customer(
+	cust_id int primary key auto_increment,
+    cust_name varchar(15) not null
+);
+
+insert into online_customer (cust_name)
+values( 'Dharun' ), ("kumar"), ("Ajay"), ("Raj");
+
+select * from online_customer;
+
+create table orders(
+	order_id int primary key auto_increment,
+    cust_id int,
+    foreign key(cust_id) references online_customer(cust_id),
+    order_amount decimal(6,2)
+    constraint check_amout check(order_amount > 0)
+);
+
+insert into orders (cust_id, order_amount)
+values( 2, 365.23 ),(1, 4562.23), (1, 859.12), (4, 894.00), (3, 456.12), (3, 159.15);
+
+select * from orders;
+
+select * from online_customer c, orders o where c.cust_id = o.cust_id;
+
+select o.order_id, o.order_amount, c.cust_name
+from online_customer c
+inner join orders o
+on c.cust_id = o.cust_id
+order by o.order_id; 
+
+
+alter table orders
+drop foreign key orders_ibfk_1;
+
+alter table orders
+add constraint fk_cust_id
+foreign key(cust_id) references online_customer(cust_id);
+
+desc orders;
+
+set sql_safe_updates = 0;
+
+show create table orders;
