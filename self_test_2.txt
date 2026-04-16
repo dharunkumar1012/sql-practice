@@ -1,0 +1,84 @@
+-- [ Class Test ]
+create database sql_test;
+use sql_test;
+
+-- [ 1 ] CREATE TABLE
+
+create table student(
+	std_id int primary key auto_increment,
+    std_name varchar(30),
+    mark1 decimal(5,2),
+    mark2 decimal(5,2),
+    mark3 decimal(5,2)
+);
+
+-- [ 2 ] INSERT RECORDS
+insert into student(std_name, mark1, mark2, mark3)
+values
+	( "Dk", 75, 85, 65 ),
+    ("Baki", 99, 77, 88),
+    ('Zoro', 99, 100, 95),
+    ('Nami', 35, 36, 41),
+    ('Kira', 100, 100, 100);
+
+-- [ 3 ] INSERT RECORDS IN SAME NAME
+insert into student(std_name, mark1, mark2, mark3)
+values
+	('Dk', 59, 75, 53),
+    ('Baki', 91, 73, 64),
+    ('zoro', 93, 71, 82);
+
+-- [ 4 ] TOTAL
+alter table student
+add column total decimal(6,2);
+
+update student
+set total = mark1 + mark2 + mark3;
+	
+-- [ 5 ] AVERAGE
+alter table student
+add column average decimal(6,2);
+
+update student
+set average = (mark1 + mark2 + mark3) / 3;
+
+-- [ 6 ]
+select * from student;
+
+-- [ 8 ] ORDER TOTAL IN HIGHEST
+select * from student
+order by total desc
+limit 3;
+
+-- [ 9 ] ORDER TOTAL IN LOWEST 
+select * from student
+order by total asc
+limit 3;
+
+-- [ 10 ] ORDER NAME IN ASC TOTAL IN DESC
+select * from student
+order by std_name asc, total desc;
+
+-- [ 7 ] AGGREGATE FUNCTION
+
+-- 1. [ COUNT ]
+SELECT count(*) from student;
+
+-- 2. [ MAX ]
+select max(total) from student;
+
+-- 3. [ MIN ]
+select min(total) from student;
+
+-- 4. [AVG]
+select avg(total) from student;
+
+-- 5. [ SUM ]
+select sum(total) from student;
+
+-- 6. [ DISTINCT ]
+select distinct std_name from student;
+
+set sql_safe_updates = 0;
+
+    
