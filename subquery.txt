@@ -1,0 +1,114 @@
+create database subquery;
+use subquery;
+
+-- Creating the necessary table for the explanation
+
+-- 1.Service tables
+
+create table services(sid int primary key, sname varchar(20), sfee double(30,2));
+
+insert into services values (1,'Accounting',1500.00),
+(2,'Recruitment',500.00),(3,'Data Management',300.00),(4,'Administration',500.00),
+(5,'Customer Support',2500.00),(6,'Security',600.00);
+
+select * from services;
+
+-- 2. clients table
+
+create table clients(cid int primary key,cname varchar(30));
+
+insert into clients values(101,'JV Real Estate'),
+(102,'ABC Talent Agency'),(103,'DMW Trading'),(104,'Rabbit Foods Inc'),
+(110,'Sharp Eyes Detective Agency');
+
+select * from clients;
+
+-- 3. branches table
+
+create table branches (bid int primary key, cid int, bdesc varchar(30),blocation varchar(30));
+
+insert into branches values(1011,101,'Corporate HQ','Chennai'),
+(1012,101,'Accounting Department','Bangalore'),(1013,101,'Customer Grievances Department','Kochi'),
+(1041,104,'Branch Office(East)','Mumbai'),(1042,104,'Branch Office(West)','Chennai'),
+(1101,110,'Head Office','Chennai'),(1031,103,'N Region HO','Mysore'),
+(1032,103,'NE Region Ho','Trichy'),(1033,103,'NW Region HO','Neyveli');
+
+select * from branches;
+
+-- 4.branches_services
+
+create table branches_services(bid int,sid int);
+
+insert into branches_services values(1011,1),
+(1011,2),(1011,3),(1011,4),(1012,1),(1013,5),(1041,1),(1041,4),(1042,1),(1042,4),
+(1101,1),(1031,2),(1031,3),(1031,4),(1032,3),(1033,4);
+
+select * from branches_services;
+
+
+--   type 1: within a WHERE or HAVING clause
+
+ select  cid,count(bid) from branches group by cid;
+ 
+ select * from clients;
+ select * from branches;
+ 
+ select  cid 
+ from branches group by cid having count(bid)=2;
+ 
+ select cname from clients where cid=(select cid
+ from branches group by cid having count(bid) =2);
+
+
+
+select cname from clients where cid=104;
+-- type 2: with comparison and logical operators
+
+select * from branches_services;
+select count(*) from services;
+
+select bid, count(sid) from branches_services group by bid;
+
+select bid from branches_services 
+group by bid having count(sid)>(select count(*) from services)/3;
+
+-- type 3 : with the IN membership
+
+select * from branches_services;
+
+select * from services;
+select sid from branches_services where bid=1031;  --- 2,3,4
+select sname from services where sid in( 
+select sid from branches_services where bid=1031);
+
+-- type 4: with the EXISTS boolean test
+    -- case 1:
+  select * from branches_services;
+   select bid,count(sid) from branches_services group by bid having count(sid)>=4;
+select * from clients where exists (
+select bid from branches_services group by bid having count(sid)>=5);
+select * from clients where cid in (
+select sid from branches_services where bid=1031);
+      -- will return the null values
+      -- case 2:
+select * from clients where exists (
+select bid from branches_services group by bid having count(sid)>=4);
+
+-- one more example
+
+select * from clients where exists(select 1);
+
+-- type 5: with the FROM clause
+
+select bid,count(sid) as stotal from branches_services group by bid;  -- normal
+
+select avg(z.stotal) from (select bid,count(sid) as stotal from branches_services group by bid) as z;
+
+-- type 6: with the joins
+
+select cname from clients where cid =(select clients.cid from branches right join clients on
+clients.cid=branches.cid where branches.bid is null);
+
+
+  
+
